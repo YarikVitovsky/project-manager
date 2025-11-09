@@ -26,104 +26,152 @@ let projects = [
     }
 ];
 
-module.exports = (req, res) => {
-    // Enable CORS
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+// Netlify serverless function handler
+exports.handler = async (event, context) => {
+    const headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Content-Type': 'application/json'
+    };
 
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
+    // Handle OPTIONS request
+    if (event.httpMethod === 'OPTIONS') {
+        return { statusCode: 200, headers, body: '' };
     }
 
     // Parse URL for specific project ID
-    const url = new URL(req.url, `http://${req.headers.host}`);
-    const pathParts = url.pathname.split('/').filter(Boolean);
+    const pathParts = event.path.split('/').filter(Boolean);
     const projectId = pathParts[pathParts.length - 1];
     const isIdRequest = projectId && !isNaN(parseInt(projectId));
 
-    // GET single project by ID
-    if (req.method === 'GET' && isIdRequest) {
-        const id = parseInt(projectId);
-        const project = projects.find(p => p.id === id);
-        if (!project) {
-            return res.status(404).json({ message: 'Project not found' });
-        }
-        return res.status(200).json(project);
-    }
-
-    // GET all projects
-    if (req.method === 'GET') {
-        return res.status(200).json(projects);
-    }
-
-    // POST - Create new project
-    if (req.method === 'POST') {
-        const { name, description } = req.body;
-
-        const newProject = {
-            id: projects.length + 1,
-            name: name,
-            description: description || 'No description provided',
-            progress: 0,
-            status: 'ACTIVE',
-            dueDate: new Date().toISOString().split('T')[0],
-            team: [],
-            priority: 'medium',
-            tasksTotal: 0,
-            tasksCompleted: 0
-        };
-
-        projects.push(newProject);
-
-        return res.status(201).json({
-            message: 'Project created successfully!',
-            project: newProject,
-        });
-    }
-
-    // PATCH - Update project
-    if (req.method === 'PATCH' && isIdRequest) {
-        const id = parseInt(projectId);
-        const project = projects.find(p => p.id === id);
-
-        if (!project) {
-            return res.status(404).json({ message: 'Project not found' });
-        }
-
-        const allowedFields = [
-            'name', 'description', 'progress', 'status',
-            'dueDate', 'priority', 'team', 'tasksTotal', 'tasksCompleted'
-        ];
-
-        allowedFields.forEach(field => {
-            if (req.body[field] !== undefined) {
-                project[field] = req.body[field];
+    try {
+        // GET single project by ID
+        if (event.httpMethod === 'GET' && isIdRequest) {
+            const id = parseInt(projectId);
+            const project = projects.find(p => p.id === id);
+            if (!project) {
+                return {
+                    statusCode: 404,
+                    headers,
+                    body: JSON.stringify({ message: 'Project not found' })
+                };
             }
-        });
-
-        return res.status(200).json({
-            message: 'Project updated successfully!',
-            project: project
-        });
-    }
-
-    // DELETE project
-    if (req.method === 'DELETE' && isIdRequest) {
-        const id = parseInt(projectId);
-        const projectIndex = projects.findIndex(p => p.id === id);
-
-        if (projectIndex === -1) {
-            return res.status(404).json({ message: 'Project not found' });
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify(project)
+            };
         }
 
-        projects.splice(projectIndex, 1);
+        // GET all projects
+        if (event.httpMethod === 'GET') {
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify(projects)
+            };
+        }
 
-        return res.status(200).json({
-            message: `Project ${id} deleted successfully!`,
-            deletedId: id
-        });
+        // POST - Create new project
+        if (event.httpMethod === 'POST') {
+            const { name, description } = JSON.parse(event.body || '{}');
+
+            const newProject = {
+                id: projects.length + 1,
+                name: name,
+                description: description || 'No description provided',
+                progress: 0,
+                status: 'ACTIVE',
+                dueDate: new Date().toISOString().split('T')[0],
+                team: [],
+                priority: 'medium',
+                tasksTotal: 0,
+                tasksCompleted: 0
+            };
+
+            projects.push(newProject);
+
+            return {
+                statusCode: 201,
+                headers,
+                body: JSON.stringify({
+                    message: 'Project created successfully!',
+                    project: newProject,
+                })
+            };
+        }
+
+        // PATCH - Update project
+        if (event.httpMethod === 'PATCH' && isIdRequest) {
+            const id = parseInt(projectId);
+            const project = projects.find(p => p.id === id);
+
+            if (!project) {
+                return {
+                    statusCode: 404,
+                    headers,
+                    body: JSON.stringify({ message: 'Project not found' })
+                };
+            }
+
+            const allowedFields = [
+                'name', 'description', 'progress', 'status',
+                'dueDate', 'priority', 'team', 'tasksTotal', 'tasksCompleted'
+            ];
+
+            const updates = JSON.parse(event.body || '{}');
+            allowedFields.forEach(field => {
+                if (updates[field] !== undefined) {
+                    project[field] = updates[field];
+                }
+            });
+
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify({
+                    message: 'Project updated successfully!',
+                    project: project
+                })
+            };
+        }
+
+        // DELETE project
+        if (event.httpMethod === 'DELETE' && isIdRequest) {
+            const id = parseInt(projectId);
+            const projectIndex = projects.findIndex(p => p.id === id);
+
+            if (projectIndex === -1) {
+                return {
+                    statusCode: 404,
+                    headers,
+                    body: JSON.stringify({ message: 'Project not found' })
+                };
+            }
+
+            projects.splice(projectIndex, 1);
+
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify({
+                    message: `Project ${id} deleted successfully!`,
+                    deletedId: id
+                })
+            };
+        }
+
+        return {
+            statusCode: 405,
+            headers,
+            body: JSON.stringify({ error: 'Method not allowed' })
+        };
+    } catch (error) {
+        return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ error: 'Internal server error', message: error.message })
+        };
     }
-
-    return res.status(405).json({ error: 'Method not allowed' });
 };

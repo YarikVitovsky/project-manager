@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Search, Filter, Grid, List, Plus } from 'lucide-react';
 import ProjectCard from './ProjectCard';
 import API_URL from '../config/api';
 import './ProjectList.css';
 
 const ProjectList = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -35,6 +38,16 @@ const ProjectList = () => {
         }
     };
 
+
+    // Check if URL has ?new=true parameter to open create modal
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        if (searchParams.get('new') === 'true') {
+            setShowCreateForm(true);
+            // Clean up URL
+            navigate('/projects', { replace: true });
+        }
+    }, [location.search, navigate]);
 
     // Fetch projects from backend
     useEffect(() => {

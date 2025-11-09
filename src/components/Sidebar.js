@@ -34,11 +34,15 @@ const Sidebar = () => {
         return location.pathname === path;
     };
 
+    const handleNewProject = () => {
+        navigate('/projects?new=true');
+    };
+
     return (
         <aside className="sidebar">
             <div className="sidebar-content">
                 <div className="sidebar-header">
-                    <button className="btn btn-primary new-project-btn">
+                    <button className="btn btn-primary new-project-btn" onClick={handleNewProject}>
                         <Plus size={16} />
                         New Project
                     </button>

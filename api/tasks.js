@@ -130,105 +130,160 @@ const findTaskById = (id) => {
     return null;
 };
 
-module.exports = (req, res) => {
-    // Enable CORS
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+// Netlify serverless function handler
+exports.handler = async (event, context) => {
+    const headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Content-Type': 'application/json'
+    };
 
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
+    // Handle OPTIONS request
+    if (event.httpMethod === 'OPTIONS') {
+        return { statusCode: 200, headers, body: '' };
     }
 
     // Parse URL for specific task ID
-    const url = new URL(req.url, `http://${req.headers.host}`);
-    const pathParts = url.pathname.split('/').filter(Boolean);
+    const pathParts = event.path.split('/').filter(Boolean);
     const taskId = pathParts[pathParts.length - 1];
     const isIdRequest = taskId && !isNaN(parseInt(taskId));
 
-    // GET single task by ID
-    if (req.method === 'GET' && isIdRequest) {
-        const result = findTaskById(parseInt(taskId));
-        if (!result) {
-            return res.status(404).json({ error: 'Task not found' });
-        }
-        return res.status(200).json(result.task);
-    }
-
-    // GET all tasks grouped by status
-    if (req.method === 'GET') {
-        return res.status(200).json(taskColumns);
-    }
-
-    // POST - Create new task
-    if (req.method === 'POST') {
-        const { title, description, project, assignee, dueDate, priority, tags, status = 'todo' } = req.body;
-
-        if (!title || !description) {
-            return res.status(400).json({ error: 'Title and description are required' });
+    try {
+        // GET single task by ID
+        if (event.httpMethod === 'GET' && isIdRequest) {
+            const result = findTaskById(parseInt(taskId));
+            if (!result) {
+                return {
+                    statusCode: 404,
+                    headers,
+                    body: JSON.stringify({ error: 'Task not found' })
+                };
+            }
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify(result.task)
+            };
         }
 
-        const newTask = {
-            id: getNextId(),
-            title,
-            description,
-            project: project || '',
-            assignee: assignee || '',
-            dueDate: dueDate || '',
-            priority: priority || 'medium',
-            tags: tags || []
-        };
-
-        if (taskColumns[status]) {
-            taskColumns[status].tasks.push(newTask);
-            return res.status(201).json(newTask);
+        // GET all tasks grouped by status
+        if (event.httpMethod === 'GET') {
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify(taskColumns)
+            };
         }
 
-        return res.status(400).json({ error: 'Invalid status' });
-    }
+        // POST - Create new task
+        if (event.httpMethod === 'POST') {
+            const { title, description, project, assignee, dueDate, priority, tags, status = 'todo' } = JSON.parse(event.body || '{}');
 
-    // PATCH - Update task
-    if (req.method === 'PATCH' && isIdRequest) {
-        const result = findTaskById(parseInt(taskId));
-        if (!result) {
-            return res.status(404).json({ error: 'Task not found' });
+            if (!title || !description) {
+                return {
+                    statusCode: 400,
+                    headers,
+                    body: JSON.stringify({ error: 'Title and description are required' })
+                };
+            }
+
+            const newTask = {
+                id: getNextId(),
+                title,
+                description,
+                project: project || '',
+                assignee: assignee || '',
+                dueDate: dueDate || '',
+                priority: priority || 'medium',
+                tags: tags || []
+            };
+
+            if (taskColumns[status]) {
+                taskColumns[status].tasks.push(newTask);
+                return {
+                    statusCode: 201,
+                    headers,
+                    body: JSON.stringify(newTask)
+                };
+            }
+
+            return {
+                statusCode: 400,
+                headers,
+                body: JSON.stringify({ error: 'Invalid status' })
+            };
         }
 
-        const { task, columnKey } = result;
-        const { title, description, project, assignee, dueDate, priority, tags, status } = req.body;
+        // PATCH - Update task
+        if (event.httpMethod === 'PATCH' && isIdRequest) {
+            const result = findTaskById(parseInt(taskId));
+            if (!result) {
+                return {
+                    statusCode: 404,
+                    headers,
+                    body: JSON.stringify({ error: 'Task not found' })
+                };
+            }
 
-        // Update task fields
-        if (title !== undefined) task.title = title;
-        if (description !== undefined) task.description = description;
-        if (project !== undefined) task.project = project;
-        if (assignee !== undefined) task.assignee = assignee;
-        if (dueDate !== undefined) task.dueDate = dueDate;
-        if (priority !== undefined) task.priority = priority;
-        if (tags !== undefined) task.tags = tags;
+            const { task, columnKey } = result;
+            const { title, description, project, assignee, dueDate, priority, tags, status } = JSON.parse(event.body || '{}');
 
-        // If status changed, move task to new column
-        if (status && status !== columnKey && taskColumns[status]) {
-            const taskIndex = taskColumns[columnKey].tasks.findIndex(t => t.id === task.id);
+            // Update task fields
+            if (title !== undefined) task.title = title;
+            if (description !== undefined) task.description = description;
+            if (project !== undefined) task.project = project;
+            if (assignee !== undefined) task.assignee = assignee;
+            if (dueDate !== undefined) task.dueDate = dueDate;
+            if (priority !== undefined) task.priority = priority;
+            if (tags !== undefined) task.tags = tags;
+
+            // If status changed, move task to new column
+            if (status && status !== columnKey && taskColumns[status]) {
+                const taskIndex = taskColumns[columnKey].tasks.findIndex(t => t.id === task.id);
+                taskColumns[columnKey].tasks.splice(taskIndex, 1);
+                taskColumns[status].tasks.push(task);
+            }
+
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify(task)
+            };
+        }
+
+        // DELETE task
+        if (event.httpMethod === 'DELETE' && isIdRequest) {
+            const result = findTaskById(parseInt(taskId));
+            if (!result) {
+                return {
+                    statusCode: 404,
+                    headers,
+                    body: JSON.stringify({ error: 'Task not found' })
+                };
+            }
+
+            const { columnKey } = result;
+            const taskIndex = taskColumns[columnKey].tasks.findIndex(t => t.id === parseInt(taskId));
             taskColumns[columnKey].tasks.splice(taskIndex, 1);
-            taskColumns[status].tasks.push(task);
+
+            return {
+                statusCode: 204,
+                headers,
+                body: ''
+            };
         }
 
-        return res.status(200).json(task);
+        return {
+            statusCode: 405,
+            headers,
+            body: JSON.stringify({ error: 'Method not allowed' })
+        };
+    } catch (error) {
+        return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ error: 'Internal server error', message: error.message })
+        };
     }
-
-    // DELETE task
-    if (req.method === 'DELETE' && isIdRequest) {
-        const result = findTaskById(parseInt(taskId));
-        if (!result) {
-            return res.status(404).json({ error: 'Task not found' });
-        }
-
-        const { columnKey } = result;
-        const taskIndex = taskColumns[columnKey].tasks.findIndex(t => t.id === parseInt(taskId));
-        taskColumns[columnKey].tasks.splice(taskIndex, 1);
-
-        return res.status(204).send();
-    }
-
-    return res.status(405).json({ error: 'Method not allowed' });
 };
