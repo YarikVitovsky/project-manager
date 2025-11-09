@@ -2,15 +2,33 @@
 
 A modern, full-stack project management application built with React and Vercel Serverless Functions. Manage projects, tasks, teams, and track progress all in one place.
 
-## 🚀 Live Demo
-
-**Serverless Architecture on Vercel:**
-- Live Demo: [https://project-manager-ten-eosal.vercel.app](https://project-manager-ten-eosal.vercel.app)
-- Demonstrates: Serverless functions, modern full-stack deployment, scalable architecture
-
 ![ProjectHub Dashboard](https://img.shields.io/badge/Status-Active-success)
 ![React](https://img.shields.io/badge/React-18.x-blue)
 ![Vercel](https://img.shields.io/badge/Vercel-Serverless-black)
+![License](https://img.shields.io/badge/License-MIT-green)
+
+## 🚀 Live Demo
+
+**Production:** [https://project-manager-ten-eosal.vercel.app](https://project-manager-ten-eosal.vercel.app)
+
+## ⚡ Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/YarikVitovsky/project-manager.git
+cd project-manager
+
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+
+# Build for production
+npm run build
+```
+
+Visit `http://localhost:3000` to see the app running locally.
 
 ## ✨ Features
 
@@ -71,49 +89,42 @@ A modern, full-stack project management application built with React and Vercel 
 
 ### Prerequisites
 
-- Node.js (v18 or higher)
+- Node.js v18 or higher
 - npm or yarn
-- Git
 
-### Installation
+### Local Development
 
-1. **Clone the repository**
+1. **Clone and install**
    ```bash
    git clone https://github.com/YarikVitovsky/project-manager.git
    cd project-manager
-   ```
-
-2. **Install Dependencies**
-   ```bash
    npm install
    ```
 
-3. **Start the Development Server**
+2. **Environment setup** (optional)
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Start development server**
    ```bash
    npm start
    ```
-   Application will run on `http://localhost:3000`
+   
+   Opens at `http://localhost:3000`
 
-4. **Build for Production**
-   ```bash
-   npm run build
-   ```
+### Deployment
 
-### Deployment to Vercel
+**Deploy to Vercel** (Recommended):
+```bash
+npm install -g vercel
+vercel
+```
 
-This project is optimized for Vercel deployment with serverless functions:
-
-1. Install Vercel CLI:
-   ```bash
-   npm install -g vercel
-   ```
-
-2. Deploy:
-   ```bash
-   vercel
-   ```
-
-The `api/` folder contains serverless functions that will be automatically deployed as API endpoints.
+The project is pre-configured for Vercel with:
+- Automatic builds from `main` branch
+- Serverless API functions in `/api` folder
+- Optimized production builds
 
 ## 📁 Project Structure
 
