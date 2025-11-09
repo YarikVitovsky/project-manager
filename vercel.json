@@ -1,4 +1,6 @@
 {
+    "buildCommand": "cd project-management-frontend && npm install && npm run build",
+    "outputDirectory": "project-management-frontend/build",
     "rewrites": [
         {
             "source": "/api/(.*)",
