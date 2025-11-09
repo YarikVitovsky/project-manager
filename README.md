@@ -74,8 +74,8 @@ A modern, full-stack project management application built with React, Node.js, a
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd project-management
+   git clone https://github.com/YarikVitovsky/project-manager.git
+   cd project-manager
    ```
 
 2. **Install Backend Dependencies**
