@@ -1,24 +1,16 @@
 # ProjectHub - Project Management Application
 
-A modern, full-stack project management application built with React, Node.js, and Express. Manage projects, tasks, teams, and track progress all in one place.
+A modern, full-stack project management application built with React and Vercel Serverless Functions. Manage projects, tasks, teams, and track progress all in one place.
 
 ## 🚀 Live Demo
 
-**Two deployment versions available:**
-
-1. **Microservices Architecture** (this branch): Separate frontend and backend
-   - Frontend: [Netlify](https://yarik-project-manager.netlify.app)
-   - Backend: Render (currently in deployment)
-   - Demonstrates: Distributed systems, CORS, API design
-   
-2. **Unified Deployment** ([`vercel-deploy`](https://github.com/YarikVitovsky/project-manager/tree/vercel-deploy) branch): Full-stack on Vercel
-   - Live Demo: Coming soon
-   - Demonstrates: Modern full-stack framework, serverless architecture
+**Serverless Architecture on Vercel:**
+- Live Demo: [https://project-manager-ten-eosal.vercel.app](https://project-manager-ten-eosal.vercel.app)
+- Demonstrates: Serverless functions, modern full-stack deployment, scalable architecture
 
 ![ProjectHub Dashboard](https://img.shields.io/badge/Status-Active-success)
 ![React](https://img.shields.io/badge/React-18.x-blue)
-![Node.js](https://img.shields.io/badge/Node.js-18.x-green)
-![Express](https://img.shields.io/badge/Express-4.x-lightgrey)
+![Vercel](https://img.shields.io/badge/Vercel-Serverless-black)
 
 ## ✨ Features
 
@@ -91,73 +83,67 @@ A modern, full-stack project management application built with React, Node.js, a
    cd project-manager
    ```
 
-2. **Install Backend Dependencies**
+2. **Install Dependencies**
    ```bash
-   cd project-management-backend
    npm install
    ```
 
-3. **Install Frontend Dependencies**
+3. **Start the Development Server**
    ```bash
-   cd ../project-management-frontend
-   npm install
-   ```
-
-4. **Environment Setup**
-
-   Create a `.env` file in the backend directory:
-   ```env
-   PORT=5000
-   FRONTEND_URL=http://localhost:3000
-   NODE_ENV=development
-   ```
-
-5. **Start the Backend Server**
-   ```bash
-   cd project-management-backend
    npm start
    ```
-   Backend will run on `http://localhost:5000`
+   Application will run on `http://localhost:3000`
 
-6. **Start the Frontend Development Server**
+4. **Build for Production**
    ```bash
-   cd project-management-frontend
-   npm start
+   npm run build
    ```
-   Frontend will run on `http://localhost:3000`
+
+### Deployment to Vercel
+
+This project is optimized for Vercel deployment with serverless functions:
+
+1. Install Vercel CLI:
+   ```bash
+   npm install -g vercel
+   ```
+
+2. Deploy:
+   ```bash
+   vercel
+   ```
+
+The `api/` folder contains serverless functions that will be automatically deployed as API endpoints.
 
 ## 📁 Project Structure
 
 ```
 project-management/
-├── project-management-backend/
-│   ├── routes/
-│   │   ├── projects.js      # Project API endpoints
-│   │   ├── tasks.js         # Task API endpoints
-│   │   └── team.js          # Team API endpoints
-│   ├── server.js            # Express server setup
-│   ├── package.json
-│   └── .env.example
-│
-└── project-management-frontend/
-    ├── public/
-    ├── src/
-    │   ├── components/
-    │   │   ├── Dashboard.js         # Main dashboard
-    │   │   ├── ProjectList.js       # Projects page
-    │   │   ├── TaskBoard.js         # Kanban board
-    │   │   ├── Team.js              # Team management
-    │   │   ├── Analytics.js         # Analytics & reports
-    │   │   ├── Calendar.js          # Calendar view
-    │   │   ├── Settings.js          # Settings page
-    │   │   ├── Header.js            # Top navigation
-    │   │   ├── Sidebar.js           # Side navigation
-    │   │   └── Layout.js            # App layout wrapper
-    │   ├── App.js
-    │   ├── App.css
-    │   └── index.js
-    ├── package.json
-    └── README.md
+├── api/                         # Vercel Serverless Functions
+│   ├── projects.js              # Project API endpoints
+│   ├── tasks.js                 # Task API endpoints
+│   └── team.js                  # Team API endpoints
+├── public/                      # Static assets
+├── src/                         # React application source
+│   ├── components/
+│   │   ├── Dashboard.js         # Main dashboard
+│   │   ├── ProjectList.js       # Projects page
+│   │   ├── TaskBoard.js         # Kanban board
+│   │   ├── Team.js              # Team management
+│   │   ├── Analytics.js         # Analytics & reports
+│   │   ├── Calendar.js          # Calendar view
+│   │   ├── Settings.js          # Settings page
+│   │   ├── Header.js            # Top navigation
+│   │   ├── Sidebar.js           # Side navigation
+│   │   └── Layout.js            # App layout wrapper
+│   ├── config/
+│   │   └── api.js               # API configuration
+│   ├── App.js
+│   ├── App.css
+│   └── index.js
+├── vercel.json                  # Vercel deployment config
+├── package.json
+└── README.md
 ```
 
 ## 🛠️ Technologies Used
@@ -168,21 +154,15 @@ project-management/
 - **Lucide React** - Icon library
 - **CSS3** - Styling
 
-### Backend
+### Backend (Serverless)
+- **Vercel Serverless Functions** - API endpoints
 - **Node.js** - Runtime environment
-- **Express.js** - Web framework
-- **CORS** - Cross-origin resource sharing
-- **Helmet** - Security headers
-- **Express Rate Limit** - API rate limiting
-- **dotenv** - Environment variables
+
+### Deployment
+- **Vercel** - Hosting and serverless functions
 
 ## 🔧 Available Scripts
 
-### Backend
-- `npm start` - Start the server
-- `npm run dev` - Start with nodemon (auto-reload)
-
-### Frontend
 - `npm start` - Start development server
 - `npm run build` - Build for production
 - `npm test` - Run tests
@@ -243,11 +223,10 @@ Comprehensive team member management:
 
 ## 🔐 Security Features
 
-- Helmet.js for HTTP headers security
-- CORS configuration
-- Rate limiting on API endpoints
+- CORS configuration for API endpoints
 - Input validation
-- Error handling middleware
+- Serverless function isolation
+- Vercel's built-in DDoS protection
 
 ## 📱 Responsive Design
 

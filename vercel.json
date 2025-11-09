@@ -1,14 +1,10 @@
 {
-    "buildCommand": "cd project-management-frontend && npm install && npm run build",
-    "outputDirectory": "project-management-frontend/build",
+    "buildCommand": "npm install && npm run build",
+    "outputDirectory": "build",
     "rewrites": [
         {
-            "source": "/api/(.*)",
-            "destination": "/api/$1"
-        },
-        {
-            "source": "/(.*)",
-            "destination": "/index.html"
+            "source": "/api/:path*",
+            "destination": "/api/:path*"
         }
     ]
 }
