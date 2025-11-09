@@ -6,6 +6,8 @@ A modern, full-stack project management application built with React, Node.js, a
 
 **Try it out:** [https://yarik-project-manager.netlify.app](https://yarik-project-manager.netlify.app)
 
+> ⏱️ **Note:** The backend is hosted on Render's free tier, which spins down after 15 minutes of inactivity. The first request may take **1-2 minutes** to load while the server wakes up. After that, it will be fast and responsive!
+
 ![ProjectHub Dashboard](https://img.shields.io/badge/Status-Active-success)
 ![React](https://img.shields.io/badge/React-18.x-blue)
 ![Node.js](https://img.shields.io/badge/Node.js-18.x-green)
@@ -248,7 +250,14 @@ The application is fully responsive and works seamlessly across:
 - Tablet (768px - 1366px)
 - Mobile (320px - 768px)
 
-## � Deployment
+## 🌐 Deployment
+
+### Current Deployment
+
+- **Frontend**: Deployed on [Netlify](https://yarik-project-manager.netlify.app)
+- **Backend**: Deployed on [Render](https://project-manager-q4bl.onrender.com)
+
+> ⚠️ **Important:** Render's free tier spins down after 15 minutes of inactivity. The first request will take 50-90 seconds to wake up the server. Consider upgrading to a paid plan ($7/month) for instant responses, or use alternatives like Railway (better free tier with no sleep).
 
 ### Deploy to Netlify (Frontend)
 
