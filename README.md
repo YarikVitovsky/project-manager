@@ -2,11 +2,18 @@
 
 A modern, full-stack project management application built with React, Node.js, and Express. Manage projects, tasks, teams, and track progress all in one place.
 
-## 🚀 [Live Demo](https://yarik-project-manager.netlify.app)
+## 🚀 Live Demo
 
-**Try it out:** [https://yarik-project-manager.netlify.app](https://yarik-project-manager.netlify.app)
+**Two deployment versions available:**
 
-> ⏱️ **Note:** The backend is hosted on Render's free tier, which spins down after 15 minutes of inactivity. The first request may take **1-2 minutes** to load while the server wakes up. After that, it will be fast and responsive!
+1. **Microservices Architecture** (this branch): Separate frontend and backend
+   - Frontend: [Netlify](https://yarik-project-manager.netlify.app)
+   - Backend: Render (currently in deployment)
+   - Demonstrates: Distributed systems, CORS, API design
+   
+2. **Unified Deployment** ([`vercel-deploy`](https://github.com/YarikVitovsky/project-manager/tree/vercel-deploy) branch): Full-stack on Vercel
+   - Live Demo: Coming soon
+   - Demonstrates: Modern full-stack framework, serverless architecture
 
 ![ProjectHub Dashboard](https://img.shields.io/badge/Status-Active-success)
 ![React](https://img.shields.io/badge/React-18.x-blue)
