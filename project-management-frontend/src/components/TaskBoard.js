@@ -288,7 +288,15 @@ const TaskBoard = () => {
                 </div>
             </div>
 
-            {loading && <div className="loading">Loading tasks...</div>}
+            {loading && (
+                <div className="loading">
+                    <div className="loading-spinner"></div>
+                    <p>Loading tasks...</p>
+                    <small style={{ color: '#666', marginTop: '8px' }}>
+                        First load may take 1-2 minutes while server wakes up
+                    </small>
+                </div>
+            )}
             {error && <div className="error">Error: {error}</div>}
 
             {taskColumns && (
