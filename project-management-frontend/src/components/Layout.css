@@ -1,0 +1,35 @@
+.layout {
+    min-height: 100vh;
+    background-color: #f8fafc;
+}
+
+.layout-body {
+    display: flex;
+    min-height: calc(100vh - 64px);
+    margin-top: 64px;
+}
+
+.main-content {
+    flex: 1;
+    margin-left: 280px;
+    min-height: calc(100vh - 64px);
+    background-color: #f8fafc;
+}
+
+.main-content-inner {
+    padding: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content-inner {
+        padding: 20px 16px;
+    }
+}

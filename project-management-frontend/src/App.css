@@ -1,0 +1,60 @@
+.App {
+    min-height: 100vh;
+    background-color: #f8fafc;
+}
+
+/* Placeholder page styles */
+.page-placeholder {
+    padding: 0;
+}
+
+.page-placeholder h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 16px 0;
+}
+
+.page-placeholder p {
+    font-size: 16px;
+    color: #6b7280;
+    margin: 0 0 32px 0;
+}
+
+.placeholder-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.placeholder-card {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.placeholder-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 8px 0;
+}
+
+.placeholder-card p {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .page-placeholder h1 {
+        font-size: 24px;
+    }
+
+    .placeholder-content {
+        grid-template-columns: 1fr;
+    }
+}
