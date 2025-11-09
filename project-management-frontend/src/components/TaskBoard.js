@@ -11,6 +11,7 @@ import {
     Circle,
     AlertCircle
 } from 'lucide-react';
+import API_URL from '../config/api';
 import './TaskBoard.css';
 
 const TaskBoard = () => {
@@ -30,7 +31,7 @@ const TaskBoard = () => {
         setLoading(true);
         setError(null);
         try {
-            const res = await fetch('http://localhost:5000/api/tasks');
+            const res = await fetch(`${API_URL}/tasks`);
             if (!res.ok) throw new Error('Failed to fetch tasks');
             const data = await res.json();
             setTaskColumns(data);
@@ -53,7 +54,7 @@ const TaskBoard = () => {
     // Add new task
     const handleAddTask = async (taskData) => {
         try {
-            const res = await fetch('http://localhost:5000/api/tasks', {
+            const res = await fetch(`${API_URL}/tasks`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(taskData)
@@ -69,7 +70,7 @@ const TaskBoard = () => {
     // Update task
     const handleUpdateTask = async (taskId, updates) => {
         try {
-            const res = await fetch(`http://localhost:5000/api/tasks/${taskId}`, {
+            const res = await fetch(`${API_URL}/tasks/${taskId}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)
@@ -88,7 +89,7 @@ const TaskBoard = () => {
         if (!window.confirm('Are you sure you want to delete this task?')) return;
 
         try {
-            const res = await fetch(`http://localhost:5000/api/tasks/${taskId}`, {
+            const res = await fetch(`${API_URL}/tasks/${taskId}`, {
                 method: 'DELETE'
             });
             if (!res.ok) throw new Error('Failed to delete task');

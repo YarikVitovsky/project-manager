@@ -244,7 +244,69 @@ The application is fully responsive and works seamlessly across:
 - Tablet (768px - 1366px)
 - Mobile (320px - 768px)
 
-## 🚧 Future Enhancements
+## � Deployment
+
+### Deploy to Netlify (Frontend)
+
+1. **Build the frontend**
+   ```bash
+   cd project-management-frontend
+   npm run build
+   ```
+
+2. **Deploy to Netlify**
+   - Push your code to GitHub
+   - Go to [Netlify](https://netlify.com)
+   - Click "New site from Git"
+   - Select your repository
+   - Build settings:
+     - Base directory: `project-management-frontend`
+     - Build command: `npm run build`
+     - Publish directory: `build`
+   - Add environment variable:
+     - Key: `REACT_APP_API_URL`
+     - Value: `https://your-backend-url.onrender.com/api`
+   - Click "Deploy site"
+
+### Deploy Backend to Render
+
+1. **Push your code to GitHub**
+
+2. **Deploy to Render**
+   - Go to [Render](https://render.com)
+   - Click "New +" → "Web Service"
+   - Connect your GitHub repository
+   - Configure:
+     - Root directory: `project-management-backend`
+     - Build command: `npm install`
+     - Start command: `node server.js`
+   - Add environment variables:
+     - `NODE_ENV`: `production`
+     - `PORT`: `5000`
+     - `FRONTEND_URL`: `https://your-netlify-app.netlify.app`
+   - Click "Create Web Service"
+
+3. **Update Frontend with Backend URL**
+   - Copy your Render backend URL
+   - In Netlify, go to Site settings → Environment variables
+   - Update `REACT_APP_API_URL` with your Render URL
+   - Trigger a new deploy
+
+### Alternative Deployment Options
+
+**Frontend:**
+- Vercel
+- GitHub Pages
+- AWS Amplify
+- Firebase Hosting
+
+**Backend:**
+- Railway
+- Heroku
+- AWS EC2
+- DigitalOcean
+
+## �🚧 Future Enhancements
 
 - [ ] User authentication and authorization
 - [ ] Real-time updates with WebSockets

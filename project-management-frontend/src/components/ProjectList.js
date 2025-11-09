@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, Grid, List, Plus } from 'lucide-react';
 import ProjectCard from './ProjectCard';
+import API_URL from '../config/api';
 import './ProjectList.css';
 
 const ProjectList = () => {
@@ -34,10 +35,10 @@ const ProjectList = () => {
         }
     };
 
-    
+
     // Fetch projects from backend
     useEffect(() => {
-        fetch('http://localhost:5000/api/projects')
+        fetch(`${API_URL}/projects`)
             .then(response => response.json())
             .then(data => {
                 setProjects(data);
@@ -51,7 +52,7 @@ const ProjectList = () => {
 
     const handleCreateProject = async (projectData) => {
         try {
-            const response = await fetch('http://localhost:5000/api/projects', {
+            const response = await fetch(`${API_URL}/projects`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,7 +76,7 @@ const ProjectList = () => {
 
     const handleUpdateProject = async (projectData) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/projects/${editingProject.id}`, {
+            const response = await fetch(`${API_URL}/projects/${editingProject.id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -97,7 +98,7 @@ const ProjectList = () => {
     const handleDeleteProject = async (project) => {
         if (window.confirm(`Are you sure you want to delete "${project.name}"?`)) {
             try {
-                const response = await fetch(`http://localhost:5000/api/projects/${project.id}`, {
+                const response = await fetch(`${API_URL}/projects/${project.id}`, {
                     method: 'DELETE'
                 });
 

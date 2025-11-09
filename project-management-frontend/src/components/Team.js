@@ -14,6 +14,7 @@ import {
     Video,
     Users
 } from 'lucide-react';
+import API_URL from '../config/api';
 import './Team.css';
 
 const Team = () => {
@@ -28,7 +29,7 @@ const Team = () => {
     const fetchTeamMembers = async () => {
         setLoading(true);
         try {
-            const res = await fetch('http://localhost:5000/api/team');
+            const res = await fetch(`${API_URL}/team`);
             if (!res.ok) throw new Error('Failed to fetch team members');
             const data = await res.json();
             setTeamMembers(data);
@@ -93,7 +94,7 @@ const Team = () => {
 
     const handleAddMember = async (memberData) => {
         try {
-            const res = await fetch('http://localhost:5000/api/team', {
+            const res = await fetch(`${API_URL}/team`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(memberData)
@@ -108,7 +109,7 @@ const Team = () => {
 
     const handleUpdateMember = async (memberId, updates) => {
         try {
-            const res = await fetch(`http://localhost:5000/api/team/${memberId}`, {
+            const res = await fetch(`${API_URL}/team/${memberId}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)
@@ -125,7 +126,7 @@ const Team = () => {
         if (!window.confirm('Are you sure you want to remove this team member?')) return;
 
         try {
-            const res = await fetch(`http://localhost:5000/api/team/${memberId}`, {
+            const res = await fetch(`${API_URL}/team/${memberId}`, {
                 method: 'DELETE'
             });
             if (!res.ok) throw new Error('Failed to delete member');
