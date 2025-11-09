@@ -20,6 +20,7 @@ const TaskBoard = () => {
     const [taskColumns, setTaskColumns] = useState(null);
     const [projects, setProjects] = useState(['All Projects']);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [currentTask, setCurrentTask] = useState(null);
@@ -27,6 +28,7 @@ const TaskBoard = () => {
 
     // Fetch tasks from backend
     const fetchTasks = async () => {
+        setLoading(true);
         setError(null);
         try {
             const res = await fetch(`${API_URL}/tasks`);
@@ -40,6 +42,8 @@ const TaskBoard = () => {
             setProjects(['All Projects', ...uniqueProjects]);
         } catch (err) {
             setError(err.message);
+        } finally {
+            setLoading(false);
         }
     };
 
