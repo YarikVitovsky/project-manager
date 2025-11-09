@@ -9,7 +9,7 @@ A modern, full-stack project management application built with React and Vercel 
 
 ## 🚀 Live Demo
 
-**Production:** [https://project-manager-ten-eosal.vercel.app](https://project-manager-ten-eosal.vercel.app)
+**Production:** [https://yariks-project-manager.netlify.app](https://yariks-project-manager.netlify.app)
 
 ## ⚡ Quick Start
 
