@@ -95,7 +95,7 @@ module.exports = (req, res) => {
     if (req.method === 'POST') {
         // Create new task
         const { title, description, project, assignee, dueDate, priority, tags, status = 'todo' } = req.body;
-        
+
         const newTask = {
             id: Date.now(),
             title,
@@ -111,7 +111,7 @@ module.exports = (req, res) => {
             taskColumns[status].tasks.push(newTask);
             return res.status(201).json(newTask);
         }
-        
+
         return res.status(400).json({ error: 'Invalid status' });
     }
 
