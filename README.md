@@ -2,6 +2,10 @@
 
 A modern, full-stack project management application built with React, Node.js, and Express. Manage projects, tasks, teams, and track progress all in one place.
 
+## 🚀 [Live Demo](https://yarik-project-manager.netlify.app)
+
+**Try it out:** [https://yarik-project-manager.netlify.app](https://yarik-project-manager.netlify.app)
+
 ![ProjectHub Dashboard](https://img.shields.io/badge/Status-Active-success)
 ![React](https://img.shields.io/badge/React-18.x-blue)
 ![Node.js](https://img.shields.io/badge/Node.js-18.x-green)
