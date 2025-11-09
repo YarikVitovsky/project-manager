@@ -1,0 +1,11 @@
+{
+    {
+        "build": {
+            "buildCommand": "npm run build",
+            "env": {
+                "outputDirectory": "build",
+                "CI": "false""framework": null
+            }
+        }
+    }
+}
